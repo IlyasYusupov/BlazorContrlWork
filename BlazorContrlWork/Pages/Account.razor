@@ -1,0 +1,54 @@
+﻿@page "/account"
+
+@inject SingletonServise serv
+@inject NavigationManager manager
+
+<PageTitle>account</PageTitle>
+
+@using BlazorContrlWork.Data
+
+<h1>account</h1>
+
+<Form>
+    
+    <label for="name">Login (4 to 8 characters):</label><br/>
+    <input type="text" name="Login" @bind-value=Login disabled/><br/>
+
+    <label for="name">FirstName:</label><br/>
+    <input type="text" name="FirstName" @bind-value=FirstName disabled/><br/>
+
+    <label for="lastname">LastName:</label><br/>
+    <input type="text" name="LastName" @bind-value=LastName disabled/><br/>
+
+    <label for="Email">Email:</label><br/>
+    <input type="text" name="Email" @bind-value=Email disabled/><br/>
+
+    <label for="password">Password:</label><br/>
+    <input type="text" name="Password" @bind-value=Password disabled/><br/>
+
+    <button type="button" class="btn btn-danger" @onclick="SignOut">Sign out</button>
+</Form>
+
+@code {
+    public User user { get; set; } 
+    private string Login;
+    private string FirstName;
+    private string LastName;
+    private string Email;
+    private string Password;
+    protected override async Task OnInitializedAsync()
+    {
+        user = serv.GetUser();
+        Login = user.Login;
+        FirstName =  user.FirstName;
+        LastName = user.LastName;
+        Email = user.Email;
+        Password = user.Password;
+    }
+
+    private void SignOut()
+    {
+        serv.SetUser(null);
+        manager.NavigateTo("authorization");
+    }
+}

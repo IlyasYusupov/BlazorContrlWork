@@ -1,0 +1,59 @@
+﻿@page "/registration"
+
+@inject NavigationManager manager
+
+<PageTitle>registration</PageTitle>
+
+@using BlazorContrlWork.Data
+
+<h1>registration</h1>
+
+<Form>
+    <label for="name">Login:</label><br/>
+    <input type="text" name="Login" @bind-value=Login/><br/>
+
+    <label for="name">FirstName:</label><br/>
+    <input type="text" name="FirstName" @bind-value=FirstNama /><br/>
+
+    <label for="lastname">LastName:</label><br/>
+    <input type="text" name="LastName" @bind-value=LastName /><br/>
+
+    <label for="Email">Email:</label><br/>
+    <input type="text" name="Email" @bind-value=Email /><br/>
+
+    <label for="password">Password:</label><br/>
+    <input type="password" name="Password" @bind-value=Password/><br/>
+
+    <br/><button type="button" class="btn btn-dark" @onclick="AddUser"> Registration</button>
+
+</Form>
+
+@code {
+    private string Login;
+    private string FirstNama;
+    private string LastName;
+    private string Email;
+    private string Password;
+
+    public void AddUser()
+    {
+        if(Mongo.Find(Login) != null)
+        {
+            return;   
+        }
+        if(Login != "" && FirstNama != "" && LastName != "" && Email != "" && Password != "")
+        {
+            Mongo.AddToDB(new User(Login, FirstNama,  LastName, Email, Password));
+            Login = "";
+            FirstNama = "";
+            LastName = "";
+            Email = "";
+            Password = "";
+            manager.NavigateTo("authorization");
+        }
+        else
+        {
+            
+        }
+    }  
+}

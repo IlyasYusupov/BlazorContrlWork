@@ -1,0 +1,45 @@
+﻿@page "/authorization"
+
+@inject NavigationManager manager
+@inject SingletonServise serv
+
+<PageTitle>Authorization</PageTitle>
+
+@using BlazorContrlWork.Data
+
+<h1>Authorization</h1>
+
+<Form>
+    <label for="name">Login (4 to 8 characters):</label><br/>
+    <input type="text" name="Login" @bind-value=Login/><br/>
+
+    <label for="password">Password:</label><br/>
+    <input type="password" name="Password" @bind-value=Password/><br/>
+
+    <br/><button type="button" class="btn btn-dark" @onclick="SignIn"> Log in</button><br/>
+
+    <br/><button type="button" class="btn btn-dark" @onclick="AddUser"> Registration</button>
+</Form>
+
+@code {
+    private string Login;
+    private string Password;
+
+    public void SignIn()
+    {
+        var users = Mongo.FindAll();
+        foreach (var user in users)
+        {
+            if(Login == user.Login && Password == user.Password)
+            {
+                serv.SetUser(user);
+                manager.NavigateTo("main");
+            }
+        }
+    }
+
+    public void AddUser()
+    {
+        manager.NavigateTo("registration");
+    }
+}

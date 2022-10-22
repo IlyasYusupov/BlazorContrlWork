@@ -1,0 +1,30 @@
+﻿@page "/main"
+
+@inject SingletonServise serv
+@inject NavigationManager manager
+
+<PageTitle>Main</PageTitle>
+
+@using BlazorContrlWork.Data
+
+<h1>Main</h1>
+
+<Form>
+    <label for="name">Здравствуйте!</label><br/>
+    <br/><button type="button" class="btn btn-success" @onclick="CheckProfile">Profile</button>
+</Form>
+
+@code {
+    public User user { get; set; } 
+    private string FirstName;
+    protected override async Task OnInitializedAsync()
+    {
+        user = serv.GetUser();
+        FirstName =  user.FirstName;
+    }
+    private void CheckProfile()
+    {
+        manager.NavigateTo("account");
+    }
+
+}
